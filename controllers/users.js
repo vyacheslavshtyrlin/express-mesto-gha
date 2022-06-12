@@ -9,8 +9,8 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUser = (req, res) => {
-  const { _id } = req.params;
-  User.findById({ _id })
+  const { id } = req.params;
+  User.findById({ id })
     .orFail(() => {
       const error = new Error('Нет пользователя по заданному id');
       error.name = 'NotFound';

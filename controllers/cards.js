@@ -14,7 +14,7 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCard = (req, res) => {
-  Cards.findByIdAndRemove(req.params.id).then((card) => res.send({ data: card }))
+  Cards.findByIdAndRemove(req.params.cardId).then((card) => res.send({ data: card }))
     .orFail(() => {
       const error = new Error('Нет карточки по заданному id');
       error.name = 'NotFound';

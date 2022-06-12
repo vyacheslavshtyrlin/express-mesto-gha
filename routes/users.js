@@ -9,7 +9,7 @@ const {
 
 router.get('/', getUsers);
 
-router.get('/:userId', getUser);
+router.get('/:id', getUser);
 
 router.post('/', createUser);
 
