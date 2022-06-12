@@ -9,8 +9,7 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUser = (req, res) => {
-  const { id } = req.params;
-  User.findById({ id })
+  User.findById(req.params.id)
     .orFail(() => {
       const error = new Error('Нет пользователя по заданному id');
       error.name = 'NotFound';
@@ -29,7 +28,7 @@ module.exports.createUser = (req, res) => {
 
 module.exports.patchUser = (req, res) => {
   const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about })
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
     .orFail(() => {
       const error = new Error('Нет пользователя по заданному id');
       error.name = 'NotFound';
@@ -41,7 +40,7 @@ module.exports.patchUser = (req, res) => {
 
 module.exports.patchAvatar = (req, res) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar })
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
     .orFail(() => {
       const error = new Error('Нет пользователя по заданному id');
       error.name = 'NotFound';
