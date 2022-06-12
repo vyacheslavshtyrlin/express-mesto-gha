@@ -1,11 +1,11 @@
 const errorCodes = {
-  castError: 404,
   validationError: 400,
+  notFoundError: 404,
   otherError: 500,
 };
 
 module.exports.errorController = (error) => {
-  if (error.name === 'CastError') return errorCodes.castError;
-  if (error.name === 'ValidationError') return errorCodes.validationError;
+  if (error.name === 'ValidationError' || error.name === 'CastError') return errorCodes.validationError;
+  if (error.name === 'NotFound') return errorCodes.notFoundError;
   return errorCodes.otherError;
 };

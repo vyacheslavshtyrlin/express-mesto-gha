@@ -2,8 +2,6 @@ const express = require('express');
 
 const { PORT = 3000 } = process.env;
 
-const path = require('path');
-
 const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
@@ -30,7 +28,9 @@ app.use('/users', users);
 
 app.use('/cards', cards);
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use((req, res) => {
+  res.status(404).send({ message: 'NotFound' });
+});
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);

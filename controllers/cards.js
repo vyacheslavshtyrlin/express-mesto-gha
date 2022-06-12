@@ -15,17 +15,32 @@ module.exports.createCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   Cards.findByIdAndRemove(req.params.id).then((card) => res.send({ data: card }))
+    .orFail(() => {
+      const error = new Error('Нет карточки по заданному id');
+      error.name = 'NotFound';
+      throw error;
+    })
     .catch((error) => res.status(errorController(error)).send({ message: error.message }));
 };
 
 module.exports.likeCard = (req, res) => {
   Cards.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
+    .orFail(() => {
+      const error = new Error('Нет карточки по заданному id');
+      error.name = 'NotFound';
+      throw error;
+    })
     .then((card) => res.send({ data: card }))
     .catch((error) => res.status(errorController(error)).send({ message: error.message }));
 };
 
 module.exports.dislikeCard = (req, res) => {
   Cards.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
+    .orFail(() => {
+      const error = new Error('Нет карточки по заданному id');
+      error.name = 'NotFound';
+      throw error;
+    })
     .then((card) => res.send({ data: card }))
     .catch((error) => res.status(errorController(error)).send({ message: error.message }));
 };

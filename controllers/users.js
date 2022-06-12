@@ -11,6 +11,11 @@ module.exports.getUsers = (req, res) => {
 module.exports.getUser = (req, res) => {
   const { _id } = req.params;
   User.findById({ _id })
+    .orFail(() => {
+      const error = new Error('Нет пользователя по заданному id');
+      error.name = 'NotFound';
+      throw error;
+    })
     .then((user) => res.send({ data: user }))
     .catch((error) => res.status(errorController(error)).send({ message: error.message }));
 };
@@ -25,6 +30,11 @@ module.exports.createUser = (req, res) => {
 module.exports.patchUser = (req, res) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about })
+    .orFail(() => {
+      const error = new Error('Нет пользователя по заданному id');
+      error.name = 'NotFound';
+      throw error;
+    })
     .then((user) => res.send({ data: user }))
     .catch((error) => res.status(errorController(error)).send({ message: error.message }));
 };
@@ -32,6 +42,11 @@ module.exports.patchUser = (req, res) => {
 module.exports.patchAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar })
+    .orFail(() => {
+      const error = new Error('Нет пользователя по заданному id');
+      error.name = 'NotFound';
+      throw error;
+    })
     .then((user) => res.send({ data: user }))
     .catch((error) => res.status(errorController(error)).send({ message: error.message }));
 };
