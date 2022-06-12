@@ -10,7 +10,7 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.getUser = (req, res) => {
   const { _id } = req.params;
-  User.findOne({ _id })
+  User.findById({ _id })
     .then((user) => res.send({ data: user }))
     .catch((error) => res.status(errorController(error)).send({ message: error.message }));
 };
