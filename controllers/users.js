@@ -1,11 +1,18 @@
 const User = require('../models/user');
 
-const { errorController } = require('./errors');
+const { errorHandler } = require('../utils/errors');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
-    .catch((error) => res.status(errorController(error)).send({ message: error.message }));
+    .catch((error) => {
+      const errorCode = errorHandler(error);
+      if (errorCode === 500) {
+        res.status(errorCode).send({ message: 'Server Error 500' });
+      } else {
+        res.status(errorCode).send({ message: error.message });
+      }
+    });
 };
 
 module.exports.getUser = (req, res) => {
@@ -16,14 +23,28 @@ module.exports.getUser = (req, res) => {
       throw error;
     })
     .then((user) => res.send({ data: user }))
-    .catch((error) => res.status(errorController(error)).send({ message: error.message }));
+    .catch((error) => {
+      const errorCode = errorHandler(error);
+      if (errorCode === 500) {
+        res.status(errorCode).send({ message: 'Server Error 500' });
+      } else {
+        res.status(errorCode).send({ message: error.message });
+      }
+    });
 };
 
 module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
-    .catch((error) => res.status(errorController(error)).send({ message: error.message }));
+    .catch((error) => {
+      const errorCode = errorHandler(error);
+      if (errorCode === 500) {
+        res.status(errorCode).send({ message: 'Server Error 500' });
+      } else {
+        res.status(errorCode).send({ message: error.message });
+      }
+    });
 };
 
 module.exports.patchUser = (req, res) => {
@@ -35,7 +56,14 @@ module.exports.patchUser = (req, res) => {
       throw error;
     })
     .then((user) => res.send({ data: user }))
-    .catch((error) => res.status(errorController(error)).send({ message: error.message }));
+    .catch((error) => {
+      const errorCode = errorHandler(error);
+      if (errorCode === 500) {
+        res.status(errorCode).send({ message: 'Server Error 500' });
+      } else {
+        res.status(errorCode).send({ message: error.message });
+      }
+    });
 };
 
 module.exports.patchAvatar = (req, res) => {
@@ -47,5 +75,12 @@ module.exports.patchAvatar = (req, res) => {
       throw error;
     })
     .then((user) => res.send({ data: user }))
-    .catch((error) => res.status(errorController(error)).send({ message: error.message }));
+    .catch((error) => {
+      const errorCode = errorHandler(error);
+      if (errorCode === 500) {
+        res.status(errorCode).send({ message: 'Server Error 500' });
+      } else {
+        res.status(errorCode).send({ message: error.message });
+      }
+    });
 };

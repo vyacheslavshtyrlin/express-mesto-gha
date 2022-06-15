@@ -4,7 +4,7 @@ const errorCodes = {
   otherError: 500,
 };
 
-module.exports.errorController = (error) => {
+module.exports.errorHandler = (error) => {
   if (error.name === 'ValidationError' || error.name === 'CastError') return errorCodes.validationError;
   if (error.name === 'NotFound') return errorCodes.notFoundError;
   return errorCodes.otherError;
