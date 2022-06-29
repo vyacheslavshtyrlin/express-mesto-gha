@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 const { errorHandler } = require('../utils/errors');
@@ -35,27 +34,16 @@ module.exports.getUser = (req, res) => {
 };
 
 module.exports.createUser = (req, res) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
-  bcrypt.hash(password, 10)
-    .then((hash) => {
-      User.create({
-        name, about, avatar, email, password: hash,
-      })
-        .then(() => res.send({
-          data: {
-            name, about, avatar, email,
-          },
-        }))
-        .catch((error) => {
-          const errorCode = errorHandler(error);
-          if (errorCode === 500) {
-            res.status(errorCode).send({ message: 'Server Error 500' });
-          } else {
-            res.status(errorCode).send({ message: error.message });
-          }
-        });
+  const { name, about, avatar } = req.body;
+  User.create({ name, about, avatar })
+    .then((user) => res.send({ data: user }))
+    .catch((error) => {
+      const errorCode = errorHandler(error);
+      if (errorCode === 500) {
+        res.status(errorCode).send({ message: 'Server Error 500' });
+      } else {
+        res.status(errorCode).send({ message: error.message });
+      }
     });
 };
 
