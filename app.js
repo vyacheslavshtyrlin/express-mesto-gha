@@ -1,36 +1,49 @@
 const express = require('express');
 
-const { PORT = 3000 } = process.env;
-
 const mongoose = require('mongoose');
 
+const cookieParser = require('cookie-parser');
+
 const bodyParser = require('body-parser');
+
+const NotFound = require('./errors/notFoundError');
+
+const { PORT = 3000 } = process.env;
+
+const auth = require('./middlewares/auth');
+
+const error = require('./middlewares/errors');
+
+const { login, createUser } = require('./controllers/users');
 
 const users = require('./routes/users');
 
 const cards = require('./routes/cards');
 
-mongoose.connect('mongodb://localhost:27017/mydb');
+mongoose.connect('mongodb://localhost:27017/mydb', {
+});
 
 const app = express();
 
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5d8b8592978f8bd833ca8133',
-  };
+app.use(cookieParser());
 
-  next();
+app.post('/signin', login);
+
+app.post('/signup', createUser);
+
+app.use((req, res, next) => {
+  next(new NotFound('Страницы не существует'));
 });
+
+app.use(auth);
 
 app.use('/users', users);
 
 app.use('/cards', cards);
 
-app.use((req, res) => {
-  res.status(404).send({ message: 'NotFound' });
-});
+app.use(error);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
