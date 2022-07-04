@@ -25,12 +25,14 @@ const userSchema = new mongoose.Schema({
     minlength: [2, 'Введите корректное имя'],
     maxlength: [30, 'Введите корректное имя'],
     required: true,
+    default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
     minlength: [2, 'Должно быть минимум 2 символа'],
     axlength: [30, 'Максимум 30 символов'],
     required: true,
+    default: 'Исследователь',
   },
   avatar: {
     type: String,
@@ -41,6 +43,7 @@ const userSchema = new mongoose.Schema({
       },
       message: 'Введен корректную ссылку',
     },
+    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
 });
 userSchema.statics.findUserByCredentials = function (password, email) {

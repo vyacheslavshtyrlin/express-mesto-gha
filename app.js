@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 
 const bodyParser = require('body-parser');
 
+const { celebrate, Joi, errors } = require('celebrate');
+
 const NotFound = require('./errors/notFoundError');
 
 const { PORT = 3000 } = process.env;
@@ -29,19 +31,34 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
-app.post('/signin', login);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), login);
 
-app.post('/signup', createUser);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string(),
+  }),
+}), createUser);
+
+app.use(auth);
 
 app.use((req, res, next) => {
   next(new NotFound('Страницы не существует'));
 });
 
-app.use(auth);
-
 app.use('/users', users);
 
 app.use('/cards', cards);
+
+app.use(errors());
 
 app.use(error);
 
