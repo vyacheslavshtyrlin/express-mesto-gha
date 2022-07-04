@@ -44,19 +44,19 @@ app.post('/signup', celebrate({
     password: Joi.string().required().min(8),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string(),
+    avatar: Joi.string().required(),
   }),
 }), createUser);
 
 app.use(auth);
 
-app.use((req, res, next) => {
-  next(new NotFound('Страницы не существует'));
-});
-
 app.use('/users', users);
 
 app.use('/cards', cards);
+
+app.use((req, res, next) => {
+  next(new NotFound('Страницы не существует'));
+});
 
 app.use(errors());
 

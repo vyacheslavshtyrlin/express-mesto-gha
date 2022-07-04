@@ -46,7 +46,11 @@ module.exports.createUser = (req, res, next) => {
       User.create({
         name, about, avatar, email, password: hash,
       })
-        .then((user) => res.send({ data: user }))
+        .then(() => res.send({
+          data: {
+            name, about, avatar, email,
+          },
+        }))
         .catch((error) => {
           if (error.code === 11000) {
             throw new Conflict('Пользователь с таким e-mail уже зарегестрирован');
@@ -66,7 +70,7 @@ module.exports.patchUser = (req, res, next) => {
       if (req.user._id.toString() !== user._id.toString()) {
         throw new Forbidden('У вас нет доступа');
       }
-      res.send({ data: user });
+      res.send({ data: { name, about } });
     })
     .catch((error) => {
       if (error.name === 'ValidationError' || error.name === 'CastError') {
@@ -84,7 +88,7 @@ module.exports.patchAvatar = (req, res, next) => {
       if (req.user._id.toString() !== user._id.toString()) {
         throw new Forbidden('У вас нет доступа');
       }
-      res.send({ data: user });
+      res.send({ data: { avatar } });
     })
     .catch((error) => {
       if (error.name === 'ValidationError' || error.name === 'CastError') {
