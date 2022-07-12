@@ -11,7 +11,7 @@ const users = require('./routes/users');
 const cards = require('./routes/cards');
 const regex = require('./utils/regex');
 
-mongoose.connect('mongodb://localhost:27017/mydb', {
+mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 const { PORT = 3000 } = process.env;
 
