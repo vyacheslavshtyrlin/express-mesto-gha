@@ -30,13 +30,12 @@ const userSchema = new mongoose.Schema({
   about: {
     type: String,
     minlength: [2, 'Должно быть минимум 2 символа'],
-    axlength: [30, 'Максимум 30 символов'],
+    maxlength: [30, 'Максимум 30 символов'],
     required: true,
     default: 'Исследователь',
   },
   avatar: {
     type: String,
-    required: true,
     validate: {
       validator(v) {
         return validator.isURL(v);

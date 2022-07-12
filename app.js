@@ -9,6 +9,7 @@ const error = require('./middlewares/errors');
 const { login, createUser } = require('./controllers/users');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
+const regex = require('./utils/regex');
 
 mongoose.connect('mongodb://localhost:27017/mydb', {
 });
@@ -33,7 +34,7 @@ app.post('/signup', celebrate({
     password: Joi.string().required().min(5),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().required(),
+    avatar: Joi.string().regex(regex),
   }),
 }), createUser);
 

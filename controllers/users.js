@@ -4,7 +4,6 @@ const User = require('../models/user');
 const NotFound = require('../errors/notFoundError');
 const Conflict = require('../errors/conflictError');
 const BadRequest = require('../errors/badRequest');
-const Forbidden = require('../errors/forbidden');
 
 module.exports.login = (req, res, next) => {
   const { password, email } = req.body;
@@ -46,11 +45,14 @@ module.exports.createUser = (req, res, next) => {
       User.create({
         name, about, avatar, email, password: hash,
       })
-        .then(() => res.send({
-          data: {
-            name, about, avatar, email,
-          },
-        }))
+        .then((data) => {
+          res.send({
+            name: data.name,
+            about: data.about,
+            avatar: data.avatar,
+            email: data.email,
+          });
+        })
         .catch((error) => {
           if (error.code === 11000) {
             throw new Conflict('Пользователь с таким e-mail уже зарегестрирован');
@@ -66,11 +68,8 @@ module.exports.createUser = (req, res, next) => {
 module.exports.patchUser = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
-    .then((user) => {
-      if (req.user._id.toString() !== user._id.toString()) {
-        throw new Forbidden('У вас нет доступа');
-      }
-      res.send({ data: { name, about } });
+    .then((data) => {
+      res.send({ name: data.name, about: data.about });
     })
     .catch((error) => {
       if (error.name === 'ValidationError' || error.name === 'CastError') {
@@ -83,12 +82,9 @@ module.exports.patchUser = (req, res, next) => {
 
 module.exports.patchAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true }, { runValidators: true })
     .then((user) => {
-      if (req.user._id.toString() !== user._id.toString()) {
-        throw new Forbidden('У вас нет доступа');
-      }
-      res.send({ data: { avatar } });
+      res.send({ avatar: user.avatar });
     })
     .catch((error) => {
       if (error.name === 'ValidationError' || error.name === 'CastError') {
