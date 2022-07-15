@@ -7,6 +7,7 @@ const NotFound = require('./errors/notFoundError');
 const auth = require('./middlewares/auth');
 const error = require('./middlewares/errors');
 const { login, createUser } = require('./controllers/users');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const users = require('./routes/users');
 const cards = require('./routes/cards');
 const regex = require('./utils/regex');
@@ -20,6 +21,8 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use(cookieParser());
+
+app.use(requestLogger); // подключаем логгер запросов
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -47,6 +50,8 @@ app.use('/cards', cards);
 app.use((req, res, next) => {
   next(new NotFound('Страницы не существует'));
 });
+
+app.use(errorLogger); // подключаем логгер ошибок
 
 app.use(errors());
 
