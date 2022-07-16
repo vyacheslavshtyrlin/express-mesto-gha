@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 const NotFound = require('./errors/notFoundError');
 const auth = require('./middlewares/auth');
@@ -25,6 +24,7 @@ const allowedCors = [
 
 const app = express();
 
+// eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
   const { origin } = req.headers;
   const { method } = req;
@@ -44,10 +44,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.use(bodyParser.json());
-
-/// const domain = ['http://localhost:3001', 'http://mesto.vyacheslavshtyrlin.nomoredomains.xyz'];
 
 app.use(cookieParser());
 
