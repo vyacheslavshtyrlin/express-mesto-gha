@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const { celebrate, Joi, errors } = require('celebrate');
+const cors = require('cors');
 const NotFound = require('./errors/notFoundError');
 const auth = require('./middlewares/auth');
 const error = require('./middlewares/errors');
@@ -16,11 +17,6 @@ const regex = require('./utils/regex');
 mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 const { PORT = 3000 } = process.env;
-const allowedCors = [
-  'https://mesto.back.nomoredomains.work',
-  'http://mesto.back.nomoredomains.work',
-  'http://localhost:3001',
-];
 
 const app = express();
 
@@ -29,24 +25,10 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // eslint-disable-next-line consistent-return
-app.use((req, res, next) => {
-  const { origin } = req.headers;
-  const { method } = req;
-  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
-  const requestHeaders = req.headers['access-control-request-headers'];
-
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Credentials', true);
-  }
-  if (method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Headers', requestHeaders);
-    return res.end();
-  }
-
-  next();
-});
+app.use(cors({
+  credentials: true,
+  origin: false,
+}));
 
 app.use(requestLogger); // подключаем логгер запросов
 
