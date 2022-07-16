@@ -17,8 +17,7 @@ mongoose.connect('mongodb://localhost:27017/mydb', {
 });
 
 const allowedCors = [
-  'https://mesto.back.nomoredomains.work',
-  'http://mesto.back.nomoredomains.work',
+  'https://mesto.vyacheslavshtyrlin.nomoredomains.xyz',
   'http://localhost:3001',
 ];
 
