@@ -13,7 +13,7 @@ module.exports.getCards = (req, res, next) => {
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   Cards.create({ name, link, owner: req.user._id })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch((error) => {
       if (error.code === 11000) {
         throw new Conflict('Пользователь с таким e-mail уже зарегестрирован');
@@ -48,7 +48,7 @@ module.exports.likeCard = (req, res, next) => {
     .orFail(() => {
       throw new NotFound('Нет карточки по заданному id');
     })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };
 
@@ -61,6 +61,6 @@ module.exports.dislikeCard = (req, res, next) => {
     .orFail(() => {
       throw new NotFound('Нет карточки по заданному id');
     })
-    .then((card) => res.send({ data: card }))
+    .then((card) => res.send(card))
     .catch(next);
 };
