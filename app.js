@@ -21,7 +21,7 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3001/sign-up',
+  origin: 'http://localhost:3001',
   credentials: true,
   optionsSuccessStatus: 200,
   allowedHeaders: 'Content-Type,Authorization',
