@@ -53,7 +53,7 @@ module.exports.createUser = (req, res, next) => {
             about: data.about,
             avatar: data.avatar,
             email: data.email,
-          });
+          }).status(200);
         })
         .catch((error) => {
           if (error.code === 11000) {
@@ -71,7 +71,7 @@ module.exports.patchUser = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((data) => {
-      res.send({ name: data.name, about: data.about });
+      res.send({ name: data.name, about: data.about }).status(200);
     })
     .catch((error) => {
       if (error.name === 'ValidationError' || error.name === 'CastError') {
@@ -86,7 +86,7 @@ module.exports.patchAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
-      res.send({ avatar: user.avatar });
+      res.send({ avatar: user.avatar }).status(200);
     })
     .catch((error) => {
       if (error.name === 'ValidationError' || error.name === 'CastError') {
@@ -102,6 +102,6 @@ module.exports.getUserMe = (req, res, next) => {
     .orFail(() => {
       throw new NotFound('Нет пользователя с таким id');
     })
-    .then((user) => res.send({ user }))
+    .then((user) => res.send({ user }).status(200))
     .catch(next);
 };
