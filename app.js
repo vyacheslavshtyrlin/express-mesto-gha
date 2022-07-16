@@ -22,10 +22,10 @@ const app = express();
 
 app.use(bodyParser.json());
 
-const domain = ['http://localhost:3001', 'http://mesto.vyacheslavshtyrlin.nomoredomains.xyz'];
+///const domain = ['http://localhost:3001', 'http://mesto.vyacheslavshtyrlin.nomoredomains.xyz'];
 
 app.use(cors({
-  origin: domain,
+  origin: 'http://localhost:3001',
   credentials: true,
 }));
 
