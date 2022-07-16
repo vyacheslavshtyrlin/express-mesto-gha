@@ -70,7 +70,7 @@ module.exports.patchUser = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((data) => {
-      res.send({ name: data.name, about: data.about }).status(200);
+      res.send({ name: data.name, about: data.about, avatar: data.avatar }).status(200);
     })
     .catch((error) => {
       if (error.name === 'ValidationError' || error.name === 'CastError') {
@@ -85,7 +85,7 @@ module.exports.patchAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
-      res.send({ avatar: user.avatar }).status(200);
+      res.send({ name: user.name, about: user.about, avatar: user.avatar }).status(200);
     })
     .catch((error) => {
       if (error.name === 'ValidationError' || error.name === 'CastError') {
