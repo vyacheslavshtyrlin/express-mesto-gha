@@ -24,7 +24,6 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
-// eslint-disable-next-line consistent-return
 app.use(cors({
   credentials: true,
   origin: false,
