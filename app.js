@@ -16,6 +16,7 @@ const regex = require('./utils/regex');
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
+
 const { PORT = 3000 } = process.env;
 
 const app = express();
@@ -26,7 +27,6 @@ app.use(cookieParser());
 
 app.use(cors({
   credentials: true,
-  origin: false,
 }));
 
 app.use(requestLogger); // подключаем логгер запросов
