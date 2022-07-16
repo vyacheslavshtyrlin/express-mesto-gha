@@ -24,6 +24,10 @@ const allowedCors = [
 
 const app = express();
 
+app.use(bodyParser.json());
+
+app.use(cookieParser());
+
 // eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
   const { origin } = req.headers;
@@ -43,10 +47,6 @@ app.use((req, res, next) => {
 
   next();
 });
-
-app.use(bodyParser.json());
-
-app.use(cookieParser());
 
 app.use(requestLogger); // подключаем логгер запросов
 
