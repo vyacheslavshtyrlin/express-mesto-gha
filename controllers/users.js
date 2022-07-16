@@ -12,7 +12,7 @@ module.exports.login = (req, res, next) => {
   User.findUserByCredentials(password, email)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret', { expiresIn: '7d' });
-      res.cookie('jwt', token, { httpOnly: true, SameSite: 'none', secure: true });
+      res.cookie('jwt', token, { httpOnly: true, sameSite: 'none', secure: true });
       res.status(200).send({ token });
     })
     .catch(next);
