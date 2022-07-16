@@ -13,7 +13,7 @@ const users = require('./routes/users');
 const cards = require('./routes/cards');
 const regex = require('./utils/regex');
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
+mongoose.connect('mongodb://localhost:27017/mydb', {
 });
 
 const allowedCors = [
