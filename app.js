@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+require('dotenv').config();
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 const NotFound = require('./errors/notFoundError');
 const auth = require('./middlewares/auth');
@@ -19,6 +21,13 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 app.use(bodyParser.json());
+
+const domain = ['http://localhost:3000', 'http://mesto.vyacheslavshtyrlin.nomoredomains.xyz'];
+
+app.use(cors({
+  origin: domain,
+  credentials: true,
+}));
 
 app.use(cookieParser());
 

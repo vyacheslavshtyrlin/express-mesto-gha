@@ -5,11 +5,13 @@ const NotFound = require('../errors/notFoundError');
 const Conflict = require('../errors/conflictError');
 const BadRequest = require('../errors/badRequest');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 module.exports.login = (req, res, next) => {
   const { password, email } = req.body;
   User.findUserByCredentials(password, email)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'somekey', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret', { expiresIn: '7d' });
       res.cookie('jwt', token, { httpOnly: true });
       res.status(200).send({ token });
     })
