@@ -20,14 +20,14 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-app.use(bodyParser.json());
-
-///const domain = ['http://localhost:3001', 'http://mesto.vyacheslavshtyrlin.nomoredomains.xyz'];
-
 app.use(cors({
   origin: 'http://localhost:3001',
   credentials: true,
 }));
+
+app.use(bodyParser.json());
+
+/// const domain = ['http://localhost:3001', 'http://mesto.vyacheslavshtyrlin.nomoredomains.xyz'];
 
 app.use(cookieParser());
 
