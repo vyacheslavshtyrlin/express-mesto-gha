@@ -23,8 +23,7 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.deleteCard = (req, res, next) => {
-  const { id } = req.params;
-  Cards.findById(id)
+  Cards.findById(req.params.cardId)
     .orFail(() => {
       throw new NotFound('Нет карточки по заданному id');
     })
