@@ -29,7 +29,7 @@ module.exports.deleteCard = (req, res, next) => {
       throw new NotFound('Нет карточки по заданному id');
     })
     .then((card) => {
-      if (card.owner.equals(req.user._id)) {
+      if (!card.owner.equals(req.user._id)) {
         throw new Forbidden('Нельзя удалять чужие карточки');
       }
       card.remove()
